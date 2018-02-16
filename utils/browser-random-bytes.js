@@ -5,22 +5,30 @@ var defineProperty = require('./properties.js').defineProperty;
 var crypto = global.crypto || global.msCrypto;
 if (!crypto || !crypto.getRandomValues) {
     console.log('WARNING: Missing strong random number source; using weak randomBytes');
-    crypto = {
-        getRandomValues: function(buffer) {
-            for (var round = 0; round < 20; round++) {
-                for (var i = 0; i < buffer.length; i++) {
-                    if (round) {
-                        buffer[i] ^= parseInt(256 * Math.random());
-                    } else {
-                        buffer[i] = parseInt(256 * Math.random());
-                    }
-                }
-            }
+  crypto = {
+    getRandomValues: function(buffer) {
+      var randomBytes = require('react-native-randombytes')
+      console.log('NOTICE: Generating using react-native-randombytes');
 
-            return buffer;
-        },
-        _weakCrypto: true
-    };
+      for (var round = 0; round < 20; round++) {
+        for (var i = 0; i < buffer.length; i++) {
+          const rand = randomBytes.randomBytes(1);
+          const hex = rand.toString('hex');
+
+          if (round) {
+            buffer[i] ^= parseInt(hex, 16);
+            // buffer[i] ^= parseInt(256 * Math.random()); // Old Version
+
+          } else {
+            buffer[i] = parseInt(hex, 16);
+            // buffer[i] = parseInt(256 * Math.random()); // Old Version
+          }
+        }
+      }
+      return buffer;
+    },
+    _weakCrypto: false
+  };
 } else {
     console.log('Found strong random number source');
 }
