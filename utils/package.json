@@ -28,7 +28,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git://github.com/ethers-io/ethers.js.git"
+    "url": "git://github.com/slavik0329/ethers.js.git"
   },
   "author": "Richard Moore <me@ricmoo.com>",
   "license": "MIT"
